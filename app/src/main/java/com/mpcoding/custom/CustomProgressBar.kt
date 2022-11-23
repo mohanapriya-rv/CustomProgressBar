@@ -18,7 +18,7 @@ class CustomProgressBar @JvmOverloads constructor(
     var percentageList: List<Int> = emptyList()
 
     private var startX = 50F
-    private var stopX = 700f
+    private var stopX = 50F
     private var startY = 100f
     private var stopY = 100f
 
@@ -61,7 +61,7 @@ class CustomProgressBar @JvmOverloads constructor(
 
     fun setPercentage(percentageList: List<Int>) {
         this.percentageList = percentageList
-        invalidate()
+        animateProgress(startX, 200f)
     }
 
     private fun setUPAttributes() {
@@ -78,12 +78,7 @@ class CustomProgressBar @JvmOverloads constructor(
             /**
              *iterate array in reverse order
              */
-//            for (percentage in percentageList.reversed()) {
-//                for (paint in paintArrayList) {
-//                    drawInnerArc(it, paint)
-////                    animateProgress(startX + percentage, percentage.toFloat())
-//                }
-//            }
+            drawInnerArc(it, completedParentArcPaint)
         }
     }
 
@@ -102,7 +97,7 @@ class CustomProgressBar @JvmOverloads constructor(
         it.drawLine(
             startX,
             startY,
-            stopX,
+            900f,
             stopY,
             parentArcPaint
         )
@@ -116,7 +111,7 @@ class CustomProgressBar @JvmOverloads constructor(
             PropertyValuesHolder.ofFloat(
                 "percent",
                 innerLineStartPosition,
-                innerLineEndPosition
+                200f
             )
         val animator = ValueAnimator().apply {
             setValues(valuesHolder)
