@@ -29,7 +29,7 @@ class FirstFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.textviewFirst.setPercentage(listOf(40,20,10))
+        binding.textviewFirst.setPercentage(listOf(200,300,500))
         super.onViewCreated(view, savedInstanceState)
     }
 

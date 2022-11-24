@@ -43,7 +43,7 @@ class CustomProgressBar @JvmOverloads constructor(
     private var pausedParentArcPaint = Paint().apply {
         style = Paint.Style.STROKE
         isAntiAlias = true
-        color = context.resources.getColor(R.color.black)
+        color = context.resources.getColor(R.color.purple_200)
         strokeCap = Paint.Cap.ROUND
         strokeWidth = 70f
     }
@@ -58,10 +58,20 @@ class CustomProgressBar @JvmOverloads constructor(
 
     private var paintArrayList: List<Paint> =
         listOf(completedParentArcPaint, pausedParentArcPaint, skippedArcPaint)
+    private var paint: Paint? = null
 
     fun setPercentage(percentageList: List<Int>) {
         this.percentageList = percentageList
-        animateProgress(startX, 200f)
+        for (i in 0..percentageList.size - 1) {
+            paint = if (i == 0) {
+                skippedArcPaint
+            } else if (i == 1) {
+                pausedParentArcPaint
+            } else {
+                completedParentArcPaint
+            }
+            animateProgress(startX, percentageList[i].toFloat())
+        }
     }
 
     private fun setUPAttributes() {
@@ -75,10 +85,9 @@ class CustomProgressBar @JvmOverloads constructor(
         super.onDraw(canvas)
         canvas?.let {
             drawLine(it)
-            /**
-             *iterate array in reverse order
-             */
-            drawInnerArc(it, completedParentArcPaint)
+            for (i in percentageList) {
+                drawInnerArc(it, paint!!)
+            }
         }
     }
 
@@ -111,7 +120,7 @@ class CustomProgressBar @JvmOverloads constructor(
             PropertyValuesHolder.ofFloat(
                 "percent",
                 innerLineStartPosition,
-                200f
+                innerLineEndPosition
             )
         val animator = ValueAnimator().apply {
             setValues(valuesHolder)
