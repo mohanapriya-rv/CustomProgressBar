@@ -29,10 +29,6 @@ class CustomProgressBar @JvmOverloads constructor(
     private var startX2 = 50F
     private var startX3 = 50F
 
-    init {
-        setUPAttributes()
-    }
-
     private var parentArcPaint = Paint().apply {
         style = Paint.Style.STROKE
         isAntiAlias = true
@@ -63,9 +59,6 @@ class CustomProgressBar @JvmOverloads constructor(
         strokeWidth = 70f
     }
 
-    private var paintArrayList: List<Paint> =
-        listOf(completedParentArcPaint, pausedParentArcPaint, skippedArcPaint)
-    private var paint: Paint? = null
 
     fun setPercentage(percentageList: List<Int>) {
         this.percentageList = percentageList
@@ -87,7 +80,7 @@ class CustomProgressBar @JvmOverloads constructor(
                 stopX3 = it.getAnimatedValue("percent") as Float
                 invalidate()
             }
-            duration = 3000
+            duration = 800
 
         }
         animator.start()
@@ -158,9 +151,9 @@ class CustomProgressBar @JvmOverloads constructor(
                 invalidate()
             }
             this.doOnEnd {
-                animateProgress(150f, 450f)
+                animateProgress(250f, 450f)
             }
-            duration = 3000
+            duration = 800
 
         }
         animator.start()
@@ -198,7 +191,7 @@ class CustomProgressBar @JvmOverloads constructor(
             this.doOnEnd {
                 animateProgress2(450f, 600f)
             }
-            duration = 3000
+            duration = 800
 
         }
         animator.start()
