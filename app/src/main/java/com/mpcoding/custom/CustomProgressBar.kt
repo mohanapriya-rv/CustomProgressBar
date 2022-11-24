@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import androidx.core.animation.doOnEnd
 import com.mpcoding.customprogressbar.R
 
 class CustomProgressBar @JvmOverloads constructor(
@@ -20,11 +21,13 @@ class CustomProgressBar @JvmOverloads constructor(
 
     private var startX = 50F
     private var stopX = 50F
-    private var stopX1 = 150F
-    private var stopX2 = 250F
-    private var stopX3 = 400F
+    private var stopX1 = 250F
+    private var stopX2 = 50F
+    private var stopX3 = 50F
     private var startY = 100f
     private var stopY = 100f
+    private var startX2 = 50F
+    private var startX3 = 50F
 
     init {
         setUPAttributes()
@@ -67,14 +70,10 @@ class CustomProgressBar @JvmOverloads constructor(
     fun setPercentage(percentageList: List<Int>) {
         this.percentageList = percentageList
         animateProgress1(startX, stopX1)
-        animateProgress(stopX1, stopX2)
-      //  animateProgress2(stopX2, stopX3)
-
         invalidate()
     }
 
     private fun animateProgress2(innerLineStartPosition: Float, innerLineEndPosition: Float) {
-        Log.d("priyaanimateProgress", "priyaanimateProgress")
         val valuesHolder =
             PropertyValuesHolder.ofFloat(
                 "percent",
@@ -84,6 +83,7 @@ class CustomProgressBar @JvmOverloads constructor(
         val animator = ValueAnimator().apply {
             setValues(valuesHolder)
             addUpdateListener {
+                startX3 = 450f
                 stopX3 = it.getAnimatedValue("percent") as Float
                 invalidate()
             }
@@ -106,9 +106,9 @@ class CustomProgressBar @JvmOverloads constructor(
         canvas?.let {
             Log.d("priyaonDraw", "onDraw")
             drawLine(it)
-            drawSkippedLine(it, skippedArcPaint)
-            drawInnerArc(it, completedParentArcPaint)
             drawPauseLine(it, pausedParentArcPaint)
+            drawInnerArc(it, completedParentArcPaint)
+            drawSkippedLine(it, skippedArcPaint)
         }
     }
 
@@ -116,7 +116,7 @@ class CustomProgressBar @JvmOverloads constructor(
     private fun drawInnerArc(it: Canvas, paint: Paint) {
         Log.d("priyadrawInnerArc", stopX.toString())
         it.drawLine(
-            stopX1,
+            startX2,
             startY,
             stopX2,
             stopY, completedParentArcPaint
@@ -126,7 +126,7 @@ class CustomProgressBar @JvmOverloads constructor(
     private fun drawPauseLine(it: Canvas, pausedParentArcPaint: Paint) {
         Log.d("priyadrawInnerArc", stopX.toString())
         it.drawLine(
-            stopX2,
+            startX3,
             startY,
             stopX3,
             stopY, pausedParentArcPaint
@@ -156,6 +156,9 @@ class CustomProgressBar @JvmOverloads constructor(
             addUpdateListener {
                 stopX1 = it.getAnimatedValue("percent") as Float
                 invalidate()
+            }
+            this.doOnEnd {
+                animateProgress(150f, 450f)
             }
             duration = 3000
 
@@ -188,9 +191,12 @@ class CustomProgressBar @JvmOverloads constructor(
         val animator = ValueAnimator().apply {
             setValues(valuesHolder)
             addUpdateListener {
+                startX2 = 250f
                 stopX2 = it.getAnimatedValue("percent") as Float
-                stopX3 = it.getAnimatedValue("percent") as Float
                 invalidate()
+            }
+            this.doOnEnd {
+                animateProgress2(450f, 600f)
             }
             duration = 3000
 
