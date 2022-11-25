@@ -9,7 +9,7 @@ import com.mpcoding.custom.datamodel.CustomVerticalIndicator
 import com.mpcoding.customprogressbar.databinding.FragmentFirstBinding
 
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ *Created by Mohanapriya R
  */
 class FirstFragment : Fragment() {
 
@@ -34,20 +34,20 @@ class FirstFragment : Fragment() {
         customVerticalIndicatorList.add(
             CustomVerticalIndicator(
                 0f,
-                250f,
+                450f,
                 resources.getColor(R.color.white)
             )
         )
         customVerticalIndicatorList.add(
             CustomVerticalIndicator(
-                250f,
-                450F,
+                450f,
+                590F,
                 resources.getColor(R.color.teal_200)
             )
         )
         customVerticalIndicatorList.add(
             CustomVerticalIndicator(
-                450F,
+                590F,
                 650F,
                 resources.getColor(R.color.teal_700)
             )
