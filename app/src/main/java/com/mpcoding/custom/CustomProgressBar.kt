@@ -35,7 +35,7 @@ class CustomProgressBar @JvmOverloads constructor(
         strokeCap = Paint.Cap.ROUND
         strokeWidth = 70f
     }
-    private var completedParentArcPaint = Paint().apply {
+    private var arcPaint = Paint().apply {
         style = Paint.Style.STROKE
         isAntiAlias = true
         color = context.resources.getColor(R.color.teal_700)
@@ -62,8 +62,7 @@ class CustomProgressBar @JvmOverloads constructor(
     fun setPercentage(percentageList: MutableList<CustomVerticalIndicator>) {
         this.percentageList = percentageList
         for (i in 0 until percentageList.size) {
-          //  arcPaint.color = percentageList[i].color ?: R.color.black
-            startAndStopArrayList.add(CustomPaintObj(50f, 50f, completedParentArcPaint))
+            startAndStopArrayList.add(CustomPaintObj(50f, 50f))
         }
         animateProgress1(
             percentageList.first().startPosition,
@@ -89,31 +88,39 @@ class CustomProgressBar @JvmOverloads constructor(
 
     private fun drawSecondLine(it: Canvas) {
         Log.d("priyadrawInnerArc", stopX.toString())
+        val paint = arcPaint
+        paint.color = percentageList[1].color!!
+        Log.d("priyadrawSecondLine", paint.color.toString())
         it.drawLine(
             startAndStopArrayList[1].startPosition,
             startY,
             startAndStopArrayList[1].stopPosition,
-            stopY, completedParentArcPaint
+            stopY, paint
         )
     }
 
     private fun drawThirdLine(it: Canvas, pausedParentArcPaint: Paint) {
         Log.d("priyadrawInnerArc", stopX.toString())
+        val paint = arcPaint
+        paint.color = percentageList[2].color!!
+        Log.d("priyadrawThirdLine", paint.color.toString())
         it.drawLine(
             startAndStopArrayList[2].startPosition,
             startY,
             startAndStopArrayList[2].stopPosition,
-            stopY, pausedParentArcPaint
+            stopY, paint
         )
     }
 
     private fun drawFirstLine(it: Canvas, pausedParentArcPaint: Paint) {
-        Log.d("priyadrawInnerArc", stopX.toString())
+        val paint = arcPaint
+        paint.color = percentageList[0].color!!
+        Log.d("priyadrawFirstLine", paint.color.toString())
         it.drawLine(
             startAndStopArrayList[0].startPosition,
             startY,
             startAndStopArrayList[0].stopPosition,
-            stopY, skippedArcPaint
+            stopY, paint
         )
     }
 

@@ -31,9 +31,27 @@ class FirstFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val customVerticalIndicatorList: MutableList<CustomVerticalIndicator> = mutableListOf()
-        customVerticalIndicatorList.add(CustomVerticalIndicator(0f, 250f, R.color.purple_200))
-        customVerticalIndicatorList.add(CustomVerticalIndicator(250f, 450F, R.color.teal_200))
-        customVerticalIndicatorList.add(CustomVerticalIndicator(450F, 650F, R.color.white))
+        customVerticalIndicatorList.add(
+            CustomVerticalIndicator(
+                0f,
+                250f,
+                resources.getColor(R.color.white)
+            )
+        )
+        customVerticalIndicatorList.add(
+            CustomVerticalIndicator(
+                250f,
+                450F,
+                resources.getColor(R.color.teal_200)
+            )
+        )
+        customVerticalIndicatorList.add(
+            CustomVerticalIndicator(
+                450F,
+                650F,
+                resources.getColor(R.color.teal_700)
+            )
+        )
 
         binding.textviewFirst.setPercentage(customVerticalIndicatorList)
         super.onViewCreated(view, savedInstanceState)
