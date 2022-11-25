@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.core.animation.doOnEnd
+import com.mpcoding.custom.datamodel.CustomPaintObj
 import com.mpcoding.custom.datamodel.CustomVerticalIndicator
 import com.mpcoding.customprogressbar.R
 
@@ -19,7 +20,7 @@ class CustomProgressBar @JvmOverloads constructor(
 ) : View(context, attributes, defStyle) {
 
     var percentageList: List<CustomVerticalIndicator> = emptyList()
-    var startAndStopArrayList: MutableList<CustomVerticalIndicator> = mutableListOf()
+    var startAndStopArrayList: MutableList<CustomPaintObj> = mutableListOf()
 
     private var startX = 50F
     private var stopX = 900F
@@ -61,7 +62,8 @@ class CustomProgressBar @JvmOverloads constructor(
     fun setPercentage(percentageList: MutableList<CustomVerticalIndicator>) {
         this.percentageList = percentageList
         for (i in 0 until percentageList.size) {
-            startAndStopArrayList.add(CustomVerticalIndicator(50f, 50f))
+          //  arcPaint.color = percentageList[i].color ?: R.color.black
+            startAndStopArrayList.add(CustomPaintObj(50f, 50f, completedParentArcPaint))
         }
         animateProgress1(
             percentageList.first().startPosition,
@@ -79,13 +81,13 @@ class CustomProgressBar @JvmOverloads constructor(
             Log.d("priyaonDraw", "onDraw")
             drawLine(it)
             drawThirdLine(it, pausedParentArcPaint)
-            drawSecondLine(it, completedParentArcPaint)
+            drawSecondLine(it)
             drawFirstLine(it, skippedArcPaint)
         }
     }
 
 
-    private fun drawSecondLine(it: Canvas, paint: Paint) {
+    private fun drawSecondLine(it: Canvas) {
         Log.d("priyadrawInnerArc", stopX.toString())
         it.drawLine(
             startAndStopArrayList[1].startPosition,
@@ -153,5 +155,4 @@ class CustomProgressBar @JvmOverloads constructor(
             parentArcPaint
         )
     }
-
 }
