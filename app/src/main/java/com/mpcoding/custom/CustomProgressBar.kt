@@ -77,11 +77,10 @@ class CustomProgressBar @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.let {
-            Log.d("priyaonDraw", "onDraw")
             drawLine(it)
-            drawThirdLine(it, pausedParentArcPaint)
-            drawSecondLine(it)
-            drawFirstLine(it, skippedArcPaint)
+            for (i in percentageList.indices) {
+                drawThirdLine(it, percentageList.size - 1 - i)
+            }
         }
     }
 
@@ -99,15 +98,15 @@ class CustomProgressBar @JvmOverloads constructor(
         )
     }
 
-    private fun drawThirdLine(it: Canvas, pausedParentArcPaint: Paint) {
+    private fun drawThirdLine(it: Canvas, position: Int) {
         Log.d("priyadrawInnerArc", stopX.toString())
         val paint = arcPaint
-        paint.color = percentageList[2].color!!
+        paint.color = percentageList[position].color!!
         Log.d("priyadrawThirdLine", paint.color.toString())
         it.drawLine(
-            startAndStopArrayList[2].startPosition,
+            startAndStopArrayList[position].startPosition,
             startY,
-            startAndStopArrayList[2].stopPosition,
+            startAndStopArrayList[position].stopPosition,
             stopY, paint
         )
     }
