@@ -21,7 +21,7 @@ class CustomProgressBar @JvmOverloads constructor(
     var percentageList: List<CustomVerticalIndicator> = emptyList()
 
     private var startX = 50F
-    private var stopX = 50F
+    private var stopX = 900F
     private var stopX1 = 250F
     private var stopX2 = 50F
     private var stopX3 = 50F
@@ -156,7 +156,7 @@ class CustomProgressBar @JvmOverloads constructor(
         it.drawLine(
             startX,
             startY,
-            900f,
+            stopX,
             stopY,
             parentArcPaint
         )
