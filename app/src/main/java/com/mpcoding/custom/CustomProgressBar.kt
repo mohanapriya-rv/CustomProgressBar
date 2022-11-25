@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.core.animation.doOnEnd
+import com.mpcoding.custom.datamodel.CustomVerticalIndicator
 import com.mpcoding.customprogressbar.R
 
 class CustomProgressBar @JvmOverloads constructor(
@@ -17,7 +18,7 @@ class CustomProgressBar @JvmOverloads constructor(
     defStyle: Int = 0
 ) : View(context, attributes, defStyle) {
 
-    var percentageList: List<Int> = emptyList()
+    var percentageList: List<CustomVerticalIndicator> = emptyList()
 
     private var startX = 50F
     private var stopX = 50F
@@ -29,6 +30,7 @@ class CustomProgressBar @JvmOverloads constructor(
     private var startX2 = 50F
     private var startX3 = 50F
 
+    private var count: Int = 0
     private var parentArcPaint = Paint().apply {
         style = Paint.Style.STROKE
         isAntiAlias = true
@@ -60,36 +62,11 @@ class CustomProgressBar @JvmOverloads constructor(
     }
 
 
-    fun setPercentage(percentageList: List<Int>) {
+    fun setPercentage(percentageList: MutableList<CustomVerticalIndicator>) {
         this.percentageList = percentageList
-        animateProgress1(startX, stopX1)
+        animateProgress1(percentageList.first().startPosition, percentageList.first().stopPosition)
         invalidate()
     }
-
-    private fun animateProgress2(innerLineStartPosition: Float, innerLineEndPosition: Float) {
-        val valuesHolder =
-            PropertyValuesHolder.ofFloat(
-                "percent",
-                innerLineStartPosition,
-                innerLineEndPosition
-            )
-        val animator = ValueAnimator().apply {
-            setValues(valuesHolder)
-            addUpdateListener {
-                startX3 = 450f
-                stopX3 = it.getAnimatedValue("percent") as Float
-                invalidate()
-            }
-            duration = 800
-
-        }
-        animator.start()
-    }
-
-
-    private fun setUPAttributes() {
-    }
-
 
     /**
      * An override method to draw our paint objects in the canvas object
@@ -99,14 +76,14 @@ class CustomProgressBar @JvmOverloads constructor(
         canvas?.let {
             Log.d("priyaonDraw", "onDraw")
             drawLine(it)
-            drawPauseLine(it, pausedParentArcPaint)
-            drawInnerArc(it, completedParentArcPaint)
-            drawSkippedLine(it, skippedArcPaint)
+            drawThirdLine(it, pausedParentArcPaint)
+            drawSecondLine(it, completedParentArcPaint)
+            drawFirstLine(it, skippedArcPaint)
         }
     }
 
 
-    private fun drawInnerArc(it: Canvas, paint: Paint) {
+    private fun drawSecondLine(it: Canvas, paint: Paint) {
         Log.d("priyadrawInnerArc", stopX.toString())
         it.drawLine(
             startX2,
@@ -116,7 +93,7 @@ class CustomProgressBar @JvmOverloads constructor(
         )
     }
 
-    private fun drawPauseLine(it: Canvas, pausedParentArcPaint: Paint) {
+    private fun drawThirdLine(it: Canvas, pausedParentArcPaint: Paint) {
         Log.d("priyadrawInnerArc", stopX.toString())
         it.drawLine(
             startX3,
@@ -126,7 +103,7 @@ class CustomProgressBar @JvmOverloads constructor(
         )
     }
 
-    private fun drawSkippedLine(it: Canvas, pausedParentArcPaint: Paint) {
+    private fun drawFirstLine(it: Canvas, pausedParentArcPaint: Paint) {
         Log.d("priyadrawInnerArc", stopX.toString())
         it.drawLine(
             startX,
@@ -137,7 +114,6 @@ class CustomProgressBar @JvmOverloads constructor(
     }
 
     private fun animateProgress1(startX: Float, stopX: Float) {
-        Log.d("priyaanimateProgress", "priyaanimateProgress")
         val valuesHolder =
             PropertyValuesHolder.ofFloat(
                 "percent",
@@ -147,11 +123,27 @@ class CustomProgressBar @JvmOverloads constructor(
         val animator = ValueAnimator().apply {
             setValues(valuesHolder)
             addUpdateListener {
-                stopX1 = it.getAnimatedValue("percent") as Float
+                when (count) {
+                    0 -> {
+                        stopX1 = it.getAnimatedValue("percent") as Float
+                    }
+                    1 -> {
+                        stopX2 = it.getAnimatedValue("percent") as Float
+                    }
+                    2 -> {
+                        stopX3 = it.getAnimatedValue("percent") as Float
+                    }
+                }
                 invalidate()
             }
             this.doOnEnd {
-                animateProgress(250f, 450f)
+                if (count < percentageList.size - 1) {
+                    count++
+                    animateProgress1(
+                        percentageList[count].startPosition,
+                        percentageList[count].stopPosition,
+                    )
+                }
             }
             duration = 800
 
@@ -170,30 +162,4 @@ class CustomProgressBar @JvmOverloads constructor(
         )
     }
 
-    private fun animateProgress(
-        innerLineStartPosition: Float,
-        innerLineEndPosition: Float
-    ) {
-        Log.d("priyaanimateProgress", "priyaanimateProgress")
-        val valuesHolder =
-            PropertyValuesHolder.ofFloat(
-                "percent",
-                innerLineStartPosition,
-                innerLineEndPosition
-            )
-        val animator = ValueAnimator().apply {
-            setValues(valuesHolder)
-            addUpdateListener {
-                startX2 = 250f
-                stopX2 = it.getAnimatedValue("percent") as Float
-                invalidate()
-            }
-            this.doOnEnd {
-                animateProgress2(450f, 600f)
-            }
-            duration = 800
-
-        }
-        animator.start()
-    }
 }

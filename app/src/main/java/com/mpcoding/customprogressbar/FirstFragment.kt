@@ -1,10 +1,11 @@
 package com.mpcoding.customprogressbar
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.mpcoding.custom.datamodel.CustomVerticalIndicator
 import com.mpcoding.customprogressbar.databinding.FragmentFirstBinding
 
 /**
@@ -29,7 +30,12 @@ class FirstFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.textviewFirst.setPercentage(listOf(200,300,500))
+        val customVerticalIndicatorList: MutableList<CustomVerticalIndicator> = mutableListOf()
+        customVerticalIndicatorList.add(CustomVerticalIndicator(0f, 250f, R.color.purple_200))
+        customVerticalIndicatorList.add(CustomVerticalIndicator(250f, 450F, R.color.teal_200))
+        customVerticalIndicatorList.add(CustomVerticalIndicator(450F, 650F, R.color.white))
+
+        binding.textviewFirst.setPercentage(customVerticalIndicatorList)
         super.onViewCreated(view, savedInstanceState)
     }
 
