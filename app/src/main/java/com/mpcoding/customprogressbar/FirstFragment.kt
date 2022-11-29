@@ -30,31 +30,56 @@ class FirstFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val customVerticalIndicatorList: MutableList<CustomVerticalIndicator> = mutableListOf()
-        customVerticalIndicatorList.add(
-            CustomVerticalIndicator(
-                0f,
-                450f,
-                resources.getColor(R.color.white)
-            )
-        )
-        customVerticalIndicatorList.add(
-            CustomVerticalIndicator(
-                450f,
-                590F,
-                resources.getColor(R.color.teal_200)
-            )
-        )
-        customVerticalIndicatorList.add(
-            CustomVerticalIndicator(
-                590F,
-                650F,
-                resources.getColor(R.color.teal_700)
-            )
-        )
+        val total = 60
+        val first = 5
+        val second = 15
+        val third = 20
+        val fourth = 20
 
-        binding.textviewFirst.setPercentage(customVerticalIndicatorList)
+        initComponent(60f, listOf<Float>(5f, 1f, 44f, 10f))
+
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun initComponent(
+        total: Float,
+        values: List<Float>,
+    ) {
+        val perCount = (900 / total)
+        val customVerticalIndicatorList: MutableList<CustomVerticalIndicator> = mutableListOf()
+        val colorsList = mutableListOf(
+            resources.getColor(R.color.purple_500),
+            resources.getColor(R.color.teal_200),
+            resources.getColor(R.color.teal_700),
+            resources.getColor(R.color.black)
+        )
+        for (i in 0..values.size - 2) {
+            if (i == 0) {
+                customVerticalIndicatorList.add(
+                    CustomVerticalIndicator(
+                        50f, perCount * values.first()
+                    )
+                )
+            } else {
+                customVerticalIndicatorList.add(
+                    CustomVerticalIndicator(
+                        getStopPosition(i, values, perCount),
+                        getStopPosition(i + 1, values, perCount)
+                    )
+                )
+            }
+
+        }
+
+        binding.textviewFirst.setPercentage(customVerticalIndicatorList,colorsList)
+    }
+
+    private fun getStopPosition(endIndex: Int, values: List<Float>, perCount: Float): Float {
+        var stopPosition = 0f
+        for (i in 0 until endIndex) {
+            stopPosition += perCount * values[i]
+        }
+        return stopPosition
     }
 
     override fun onDestroyView() {
