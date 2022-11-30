@@ -6,7 +6,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.core.animation.doOnEnd
 import com.mpcoding.custom.datamodel.CustomPaintObj
@@ -61,8 +60,6 @@ class CustomProgressBar @JvmOverloads constructor(
         this.percentageListArray = percentageList
         this.colorsList = colorsList
         for (i in 0 until percentageList.size) {
-            Log.d("priya", percentageList[i].startPosition.toString())
-            Log.d("priya123", percentageList[i].stopPosition.toString())
             startAndStopArrayList.add(CustomPaintObj(50f, 50f))
         }
         animateProgress1(
@@ -88,13 +85,6 @@ class CustomProgressBar @JvmOverloads constructor(
 
     private fun drawThirdLine(it: Canvas, position: Int) {
         val paint = arcPaint
-//        if (position == 0) {
-//            paint.color = resources.getColor(R.color.teal_700)
-//        } else if (position == 1) {
-//            paint.color = resources.getColor(R.color.purple_200)
-//        } else if (position == 2) {
-//            paint.color = resources.getColor(R.color.purple_500)
-//        }
         paint.color = colorsList[position]
         it.drawLine(
             startAndStopArrayList[position].startPosition,
